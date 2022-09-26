@@ -98,8 +98,8 @@ class ColorConverter(object):
 
         XYZ_D65 = self._invPQ(IzAzBz @ np.linalg.inv(self.M2).T, lum=lum) @ np.linalg.inv(self.M1).T
         
-        XYZ_D65[:,0] = (XYZ_D65[:,0] + np.multiply((b-1),XYZ_D65[:,2])) / self.b 
-        XYZ_D65[:,1] = (XYZ_D65[:,1] + np.multiply((g-1),XYZ_D65[:,0])) / self.g
+        XYZ_D65[:,0] = (XYZ_D65[:,0] + np.multiply((self.b-1),XYZ_D65[:,2])) / self.b 
+        XYZ_D65[:,1] = (XYZ_D65[:,1] + np.multiply((self.g-1),XYZ_D65[:,0])) / self.g
 
         return XYZ_D65
 
@@ -118,10 +118,11 @@ class ColorConverter(object):
         
         return np.array([JzAzBz[:,0], Cz, Hz]).T
     
+    
     #JzCzHz to JzAzBz converter
     def jzczhz_2_jzazbz(self, JzCzHz):
         
-        return np.array([JzCzHz[:,0], JzCzHz[:,1]*np.cos(JzCzHz[:,2]), JzCzHz[:,1]*np.sin(JzCzHz[:,2]) ])    
+        return np.array([JzCzHz[:,0], JzCzHz[:,1]*np.cos(JzCzHz[:,2]), JzCzHz[:,1]*np.sin(JzCzHz[:,2])]).T    
 
     #Calculate the Delta E between two JzAzBz arrays!
     def jzazbz_deltaE(self, JzAzBz1, JzAzBz2):

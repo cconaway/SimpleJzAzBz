@@ -109,13 +109,22 @@ class ColorConverter(object):
         Input is an n x 3 np.matrix!!!
 
         ex = np.array([[0.0, 0.0, 0.0]])
-        
         """
+        
         #math is used in place of numpy for extremely large values, and type long support
+
         Cz = np.array([math.sqrt( (JzAzBz[:,1]**2) + (JzAzBz[:,2]**2) )])
         Hz = np.arctan2(JzAzBz[:,2], JzAzBz[:,1])
         
         return np.array([JzAzBz[:,0], Cz, Hz]).T
+    
+    #JzCzHz to JzAzBz converter
+    def jzczhz_2_jzazbz(self, JzCzHz):
+        
+        return np.array([JzCzHz[:,0], JzCzHz[:,1]*np.cos(JzCzHz[:,2]), JzCzHz[:,1]*np.sin(JzCzHz[:,2]) ])
+    
+    [Jz, Cz * Math.cos(hz), Cz * Math.sin(hz)]
+        
 
     #Calculate the Delta E between two JzAzBz arrays!
     def jzazbz_deltaE(self, JzAzBz1, JzAzBz2):

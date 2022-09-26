@@ -121,10 +121,7 @@ class ColorConverter(object):
     #JzCzHz to JzAzBz converter
     def jzczhz_2_jzazbz(self, JzCzHz):
         
-        return np.array([JzCzHz[:,0], JzCzHz[:,1]*np.cos(JzCzHz[:,2]), JzCzHz[:,1]*np.sin(JzCzHz[:,2]) ])
-    
-    [Jz, Cz * Math.cos(hz), Cz * Math.sin(hz)]
-        
+        return np.array([JzCzHz[:,0], JzCzHz[:,1]*np.cos(JzCzHz[:,2]), JzCzHz[:,1]*np.sin(JzCzHz[:,2]) ])    
 
     #Calculate the Delta E between two JzAzBz arrays!
     def jzazbz_deltaE(self, JzAzBz1, JzAzBz2):

@@ -104,7 +104,7 @@ class ColorConverter(object):
         return XYZ_D65
 
     #JzAzBz to JzCzHz converter
-    def jzazbz_2_jzczhz(JzAzBz):
+    def jzazbz_2_jzczhz(self, JzAzBz):
         """
         Input is an n x 3 np.matrix!!!
 

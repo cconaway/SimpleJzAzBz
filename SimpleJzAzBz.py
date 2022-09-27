@@ -150,10 +150,14 @@ class ColorConverter(object):
         ex = np.array([[0.0, 0.0, 0.0]])
         
         """
-        unscaled_rgb = XYZ_D65 @ self.M3.T
+        rgb = XYZ_D65 @ self.M3.T
+        
+        rgb[:,0] = self._nonlinear_xyz_rgb(rgb[:,0])
+        rgb[:,1] = self._nonlinear_xyz_rgb(rgb[:,1])
+        rgb[:,2] = self._nonlinear_xyz_rgb(rgb[:,2])
 
         #Note that the method of rounding will impact interpolated RGBs
-        return np.round(unscaled_rgb * 255)
+        return np.round(rgb * 255)
     
     #Convert sRGB to XYZ_D65
     def srgb_2_xyz65(self, sRGB):
@@ -164,7 +168,23 @@ class ColorConverter(object):
         
         """
         sRGB = sRGB/255
+        
+        sRGB[:,0] = self._nonlinear_rgb_xyz(sRGB[:,0])
+        sRGB[:,1] = self._nonlinear_rgb_xyz(sRGB[:,1])
+        sRGB[:,2] = self._nonlinear_rgb_xyz(sRGB[:,2])
+        
+        
         return (self.M4 @ sRGB.T).T
-
-
     
+    def _nonlinear_xyz_rgb(self, x):
+        if x <= 0.0031308:
+            return x * 12.92
+        else:
+            return 1.055 * (x ** (1/2.4)) - 0.055
+    
+    def _nonlinear_rgb_xyz(self, x):
+        if x <= 0.04045:
+            return x / 12.92
+        else:
+            return (np.sign((x+0.055)/1.055) * np.power(np.abs(x+0.055)/1.055, 2.4))
+

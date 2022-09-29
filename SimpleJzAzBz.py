@@ -178,18 +178,26 @@ class ColorConverter(object):
         
         return (self.M4 @ sRGB.T).T
     
+
     def _nonlinear_xyz_rgb(self, x):
-        for i, j in enumerate(x):
-            if j <= 0.0031308:
-                x[i] = j * 12.92
-            else:
-                x[i] = 1.055 * (j ** (1/2.4)) - 0.055
-        
+
+        with np.nditer(x, op_flags=['readwrite']) as ar:
+            for i in ar:
+                if i <= 0.0031308:
+                    i[...] = 12.92 * i
+                else:
+                    i[...] = 1.055 * (i ** (1/2.4)) - 0.055
+
         return x
-    
+
     def _nonlinear_rgb_xyz(self, x):
-        if x <= 0.04045:
-            return x / 12.92
-        else:
-            return (np.sign((x+0.055)/1.055) * np.power(np.abs(x+0.055)/1.055, 2.4))
+
+        with np.nditer(x, op_flags=['readwrite']) as ar:
+            for i in ar:
+                if i <= 0.04045:
+                    i[...] = i / 12.92
+                else:
+                    i[...] = (np.sign((i+0.055)/1.055) * np.power(np.abs(i+0.055)/1.055, 2.4))
+
+        return x
 

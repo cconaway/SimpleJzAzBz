@@ -152,11 +152,9 @@ class ColorConverter(object):
         """
         rgb = XYZ_D65 @ self.M3.T
         
-        #need to make adjustments to nonlinearity of srgb,
-        # will instead use linear rgb for now
-        #rgb[:,0] = self._nonlinear_xyz_rgb(rgb[:,0])
-        #rgb[:,1] = self._nonlinear_xyz_rgb(rgb[:,1])
-        #rgb[:,2] = self._nonlinear_xyz_rgb(rgb[:,2])
+        rgb[:,0] = self._nonlinear_xyz_rgb(rgb[:,0])
+        rgb[:,1] = self._nonlinear_xyz_rgb(rgb[:,1])
+        rgb[:,2] = self._nonlinear_xyz_rgb(rgb[:,2])
 
         #Note that the method of rounding will impact interpolated RGBs
         return np.round(rgb * 255)
@@ -171,9 +169,9 @@ class ColorConverter(object):
         """
         sRGB = sRGB/255
         
-        #sRGB[:,0] = self._nonlinear_rgb_xyz(sRGB[:,0])
-        #sRGB[:,1] = self._nonlinear_rgb_xyz(sRGB[:,1])
-        #sRGB[:,2] = self._nonlinear_rgb_xyz(sRGB[:,2])
+        sRGB[:,0] = self._nonlinear_rgb_xyz(sRGB[:,0])
+        sRGB[:,1] = self._nonlinear_rgb_xyz(sRGB[:,1])
+        sRGB[:,2] = self._nonlinear_rgb_xyz(sRGB[:,2])
         
         
         return (self.M4 @ sRGB.T).T
